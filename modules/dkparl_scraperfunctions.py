@@ -83,6 +83,12 @@ def get_resume_links(startdate, enddate, SEARCH_URL_FORMAT = SEARCH_URL_FORMAT, 
 ## Resume download
 def resume_download(url, data_path):
 
+    ### check for file in data path
+    filename = re.search('(?s:.*)((?<=\/).*\.htm)', url).group(1)
+
+    if filename in os.listdir(data_path):
+        return
+
     ### send request - 5 retries
     i = 5
 
@@ -101,7 +107,6 @@ def resume_download(url, data_path):
         return
 
     ### save to data path
-    filename = re.search('(?s:.*)((?<=\/).*\.htm)', url).group(1)
     content = r.text
 
     with open(join(data_path, filename), 'w', encoding = 'utf-8') as f:
