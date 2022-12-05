@@ -52,7 +52,7 @@ def get_resume_links(startdate, enddate, SEARCH_URL_FORMAT = SEARCH_URL_FORMAT, 
 
     ### Get resume links
     resume_rows = soup.find('div', class_ = 'row search-result-container').find('table').find_all('tr')[1:]
-    resume_links = [col.find('td').find('a')['href'] for col in resume_rows]
+    resume_links = [col.find('td').find('a')['href'] for col in resume_rows if col.find('td').find('a') is not None]
     #resume_links = [link.find('a')['href'] for link in soup.find_all('td', attrs = {'data-title': 'Mødedato, -tid og samling'})]
 
     
@@ -65,8 +65,11 @@ def get_resume_links(startdate, enddate, SEARCH_URL_FORMAT = SEARCH_URL_FORMAT, 
             r = requests.get(page_url, verify = False)
             soup = bs(r.text, 'html.parser')
             
-            page_rows = soup.find('div', class_ = 'row search-result-container').find('table').find_all('tr')[1:]
-            page_links = [col.find('td').find('a')['href'] for col in page_rows]
+            try:
+                page_rows = soup.find('div', class_ = 'row search-result-container').find('table').find_all('tr')[1:]
+                page_links = [col.find('td').find('a')['href'] for col in resume_rows if col.find('td').find('a') is not None]
+            except TypeError:
+                raise TypeError(f'Could not reach page {pagenumber}.')
             #page_links = [link.find('a')['href'] for link in soup.find_all('td', attrs = {'data-title': 'Mødedato, -tid og samling'})]
             
             resume_links = resume_links + page_links
@@ -128,7 +131,7 @@ def resume_scraper(url):
     try:
         title = soup.find('p', class_ = 'Titel').get_text()
     except AttributeError:
-        title = ""
+        title = ''
 
     ### look for subtitle (based on html class)        
     try:
