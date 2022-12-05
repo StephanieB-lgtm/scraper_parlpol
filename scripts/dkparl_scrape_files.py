@@ -25,7 +25,7 @@ log_p = join('..', 'log')
 
 
 ## Set dates
-startdate = "20201201" ## format YYYYMMDD
+startdate = "20050101" ## format YYYYMMDD
 enddate = "20221230" ## format YYYYMMDD
 
 
