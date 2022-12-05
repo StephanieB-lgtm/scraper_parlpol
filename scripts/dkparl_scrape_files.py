@@ -26,7 +26,7 @@ log_p = join('..', 'log')
 
 ## Set dates
 startdate = "20050101" ## format YYYYMMDD
-enddate = "20221230" ## format YYYYMMDD
+enddate = "20071230" ## format YYYYMMDD
 
 
 ## Get resume links
@@ -45,7 +45,7 @@ failed = []
 for link in resume_links:
     try:
         resume_download(link, data_path = data_p)
-    except ConnectionError:
+    except (ConnectionError, AttributeError):
         failed.append(link)
     
     time.sleep(random.uniform(0.5, 1.5))
