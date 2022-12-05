@@ -67,7 +67,7 @@ def get_resume_links(startdate, enddate, SEARCH_URL_FORMAT = SEARCH_URL_FORMAT, 
             
             try:
                 page_rows = soup.find('div', class_ = 'row search-result-container').find('table').find_all('tr')[1:]
-                page_links = [col.find('td').find('a')['href'] for col in resume_rows if col.find('td').find('a') is not None]
+                page_links = [col.find('td').find('a')['href'] for col in page_rows if col.find('td').find('a') is not None]
             except TypeError:
                 raise TypeError(f'Could not reach page {pagenumber}.')
             #page_links = [link.find('a')['href'] for link in soup.find_all('td', attrs = {'data-title': 'Mødedato, -tid og samling'})]
