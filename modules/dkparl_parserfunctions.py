@@ -13,7 +13,7 @@ def get_agendaitem(parlsoup, itemno):
     ### Getting all tags separated by <meta name="ItemNo"/>
     agendaitems = []
 
-    item_start = soup.find('meta', attrs = {'name': 'ItemNo', 'content': itemno})
+    item_start = parlsoup.find('meta', attrs = {'name': 'ItemNo', 'content': itemno})
     item_tags = item_start.next_siblings # Using generator object
 
     current_tag = next(item_tags)
