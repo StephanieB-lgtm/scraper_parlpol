@@ -26,7 +26,7 @@ parsed_files = []
 
 ## Parse files
 failed = []
-for filep in fileps:
+for c, filep in enumerate(fileps, start=1):
 
     with open(filep, 'r') as f:
         parlresume = f.read()
@@ -36,5 +36,21 @@ for filep in fileps:
         parsed_files.append(resume_parsed)
     except:
         failed.append(filep)
+    
+    progress = "|{0}| {1:.2f} %".format(("="*int(c/len(fileps) * 50)).ljust(50), c/len(fileps) * 100)
+    print(progress, end = "\r")
 
+## Store data as JSON - failed files as newline separated txt
 file_out = 'dkparl_parsed_20221216.json'
+failed_out = 'files_failed.txt'
+
+file_out_p = join(data_out_p, file_out)
+failed_out_p = join(data_out_p, failed_out)
+
+with open(file_out_p, 'w', encoding='utf-8') as f:
+    json.dump(parsed_files, f)
+
+with open(failed_out_p, 'w', encoding='utf-8') as f:
+    for line in failed:
+        f.write(line + '\n')
+
