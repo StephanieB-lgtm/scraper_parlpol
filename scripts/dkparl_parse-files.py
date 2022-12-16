@@ -19,20 +19,21 @@ data_out_p = join(data_p)
 
 ## List of datafiles
 files = os.listdir(data_raw_p)
-fileps = [join(data_raw_p, file) for file in files]
 
 ## List for parsed files
 parsed_files = []
 
 ## Parse files
 failed = []
-for c, filep in enumerate(fileps, start=1):
+for c, file in enumerate(files, start=1):
+
+    filepath = join(data_raw_p, file)
 
     with open(filep, 'r') as f:
         parlresume = f.read()
 
     try:
-        resume_parsed = parse_parlresume(parlresume)
+        resume_parsed = parse_parlresume(parlresume, file)
         parsed_files.append(resume_parsed)
     except:
         failed.append(filep)

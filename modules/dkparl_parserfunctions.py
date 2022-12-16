@@ -42,7 +42,7 @@ def get_agendaitem(parlsoup, itemno):
     return(item_dict)
 
 ## Function for parsing parlresume
-def parse_parlresume(parlresume):
+def parse_parlresume(parlresume, filename):
     ## Empty dict for all info in document/resume
     parldict = {}
 
@@ -52,6 +52,9 @@ def parse_parlresume(parlresume):
     ## Extract title and subtitle
     parldict['Title'] = soup.find('p', class_ = 'Titel').get_text()
     parldict['SubTitle'] = soup.find('p', class_ = 'UnderTitel').get_text()
+
+    ## Filename
+    parldict['Filename'] = filename
 
     ## Meta information in begining of document
     metas = soup.find_all('meta')
