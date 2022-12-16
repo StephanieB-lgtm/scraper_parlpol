@@ -29,16 +29,16 @@ for c, file in enumerate(files, start=1):
 
     filepath = join(data_raw_p, file)
 
-    with open(filep, 'r') as f:
+    with open(filepath, 'r', encoding='utf-8') as f:
         parlresume = f.read()
 
     try:
         resume_parsed = parse_parlresume(parlresume, file)
         parsed_files.append(resume_parsed)
     except:
-        failed.append(filep)
+        failed.append(filepath)
     
-    progress = "|{0}| {1:.2f} %".format(("="*int(c/len(fileps) * 50)).ljust(50), c/len(fileps) * 100)
+    progress = "|{0}| {1:.2f} %".format(("="*int(c/len(files) * 50)).ljust(50), c/len(files) * 100)
     print(progress, end = "\r")
 
 ## Store data as JSON - failed files as newline separated txt
@@ -49,9 +49,8 @@ file_out_p = join(data_out_p, file_out)
 failed_out_p = join(data_out_p, failed_out)
 
 with open(file_out_p, 'w', encoding='utf-8') as f:
-    json.dump(parsed_files, f)
+    json.dump(parsed_files, f, ensure_ascii=False)
 
 with open(failed_out_p, 'w', encoding='utf-8') as f:
     for line in failed:
         f.write(line + '\n')
-
