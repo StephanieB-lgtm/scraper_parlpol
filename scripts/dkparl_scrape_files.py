@@ -53,4 +53,4 @@ for link in resume_links:
 ### Save log of failed urls
 with open(join(log_p, log_name), 'w', encoding = 'utf-8') as f:
     for link in failed:
-        f.write(link = '\n')
+        f.write(link + '\n')
