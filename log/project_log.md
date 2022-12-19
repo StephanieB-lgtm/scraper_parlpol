@@ -21,4 +21,7 @@
 - Updating parser:
     - Adding filename to data
     - Adding "meddelelser fra Formanden"
-    - Separating items based on "ShortTitle" instead of ItemNo (fits format "Spørgsmål ti ministeren" as well)
+    - Separating items based on "ShortTitle" instead of ItemNo (fits format "Spørgsmål til ministeren" as well)
+- Validating after update:
+    - 16 with mismatch between agenda length and item length
+    - 7 failed
