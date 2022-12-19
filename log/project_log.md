@@ -14,3 +14,11 @@
 - Parsing html files 2007-2022
 - Failed added to txt file in data directory
 - NOTE: *Add filename to data*
+
+#### 2022-12-19
+- Validating data:
+    - about 490 with mismatch between agenda length and item length - "Spørgsmål til ministeren" a different format.
+- Updating parser:
+    - Adding filename to data
+    - Adding "meddelelser fra Formanden"
+    - Separating items based on "ShortTitle" instead of ItemNo (fits format "Spørgsmål ti ministeren" as well)

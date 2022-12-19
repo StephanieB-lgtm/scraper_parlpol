@@ -30,7 +30,7 @@ def get_agendaitem(parlsoup, itemno):
             metaname = None
 
     ### Join tags to new soup
-    item_soup = bs(''.join([str(agendaitem) for agendaitem in agendaitems]))
+    item_soup = bs(''.join([str(agendaitem) for agendaitem in agendaitems]), 'html.parser')
 
     ### Info from soup object to dicionary
     item_dict['ItemNo'] = itemno
@@ -40,6 +40,54 @@ def get_agendaitem(parlsoup, itemno):
     item_dict['ItemText'] = '\n'.join([texttag.get_text(strip = True) for texttag in item_soup.find_all('p', class_ = re.compile(r'^Tekst'))])
 
     return(item_dict)
+
+## Function for getting agenda items info (all items)
+def get_agendaitems(parlsoup, agendashort):
+
+    items = {}
+
+    for i in range(len(agendashort)):
+        item_start = parlsoup.find('meta', attrs = {'name': 'ShortTitle', 'content': agendashort[i]})
+
+        item_dict = {}
+
+        itemno = str(i)
+  
+        ### Getting all tags separated by <meta name="ShortTitle"/>
+        agendatags = [item_start]
+        item_tags = item_start.next_siblings # Using generator object
+
+        current_tag = next(item_tags)
+        metaname = None
+
+        while metaname != 'ShortTitle': # Continue adding tags until next agendaitem
+            if str(current_tag) != '\n': # Skip newlines
+                agendatags.append(current_tag)
+                
+            try:
+                current_tag = next(item_tags)
+            except StopIteration:
+                break
+            
+            try:
+                metaname = current_tag.get('name')
+            except AttributeError:
+                metaname = None
+            
+
+        ### Join tags to new soup
+        item_soup = bs(''.join([str(agendatag) for agendatag in agendatags]), 'html.parser')
+
+        ### Info from soup object to dicionary
+        item_dict['ItemNo'] = itemno
+        item_dict['ItemTitle'] = item_soup.find('meta', attrs = {'name': 'ShortTitle'}).get('content')
+        item_dict['ItemStartDateTime'] = item_soup.find('meta', attrs = {'name': 'StartDateTime'}).get('content')
+        item_dict['EndDateTime'] = item_soup.find_all('meta', attrs = {'name': 'EndDateTime'})[-1].get('content')
+        item_dict['ItemText'] = '\n'.join([texttag.get_text(strip = True) for texttag in item_soup.find_all('p', class_ = re.compile(r'^Tekst'))])
+
+        items[str(i)] = item_dict
+
+    return(items)
 
 ## Function for parsing parlresume
 def parse_parlresume(parlresume, filename):
@@ -73,15 +121,13 @@ def parse_parlresume(parlresume, filename):
         parldict[key] = value
 
     ## Full agenda as a string
-    parldict['AgendaLong'] = '\n'.join([agendasoup.get_text(strip = True) for agendasoup in soup.find_all('p', class_ = 'DagsordenTekst')])
+    parldict['AgendaLong'] = '\n'.join([agendasoup.get_text(strip = True) for agendasoup in soup.find_all('p', class_ = re.compile('DagsordenTekst|DagsordenPunkt'))])
 
     ## Agenda as list 
     agendap_soup = soup.find_all('meta', attrs = {'name': 'ShortTitle'})
 
     agendaps = []
     for agendap in agendap_soup:
-        if agendap.get('content') == 'Punkt 0': # Ignores 'meddelelser fra formanden'
-            continue
 
         agendapoint = agendap.get('content')
 
@@ -89,16 +135,16 @@ def parse_parlresume(parlresume, filename):
 
     parldict['AgendaShort'] = '\n'.join(agendaps) # Stored as string - separate at newline to get as list
 
-    ## Extract item numbers
-    itemnos = list(set([itemnotag.get('content') for itemnotag in soup.find_all('meta', attrs = {'name': 'ItemNo'})]))
-    itemnos.sort()
-    itemnos = itemnos[1:] # NOTE: Skips 0 - 'meddelelser fra formanden
+    ## DEPRECATED Extract item numbers
+    #itemnos = list(set([itemnotag.get('content') for itemnotag in soup.find_all('meta', attrs = {'name': 'ItemNo'})]))
+    #itemnos.sort()
+    #itemnos = itemnos[1:] # NOTE: Skips 0 - 'meddelelser fra formanden
 
-    ## Add items to dictionary using function
-    parldict_items = {}
-    for itemno in itemnos:
-        parldict_items[itemno] = get_agendaitem(soup, itemno)
+    ## DEPRECATED Add items to dictionary using function
+    #parldict_items = {}
+    #for itemno in itemnos:
+    #    parldict_items[itemno] = get_agendaitem(soup, itemno)
 
-    parldict['Items'] = parldict_items
+    parldict['Items'] = get_agendaitems(soup, agendaps)
 
     return(parldict)

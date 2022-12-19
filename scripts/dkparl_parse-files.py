@@ -9,7 +9,7 @@ import re
 
 sys.path.append(join('/work', '214477', 'scraper_parlpol', 'modules'))
 
-from dkparl_parserfunctions import get_agendaitem
+from dkparl_parserfunctions import get_agendaitems
 from dkparl_parserfunctions import parse_parlresume
 
 ## Paths
