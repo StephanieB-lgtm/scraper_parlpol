@@ -89,13 +89,13 @@ def get_agendaitems(parlsoup, agendashort):
 
     return(items)
 
-## Function for parsing parlresume
-def parse_parlresume(parlresume, filename):
-    ## Empty dict for all info in document/resume
+## Function for parsing parliament meeting minutes
+def parse_parlminutes(parlminutes, filename):
+    ## Empty dict for all info in document/minutes
     parldict = {}
 
     ## Convert to soup
-    soup = bs(parlresume, 'html.parser')
+    soup = bs(parlminutes, 'html.parser')
 
     ## Extract title and subtitle
     parldict['Title'] = soup.find('p', class_ = 'Titel').get_text()

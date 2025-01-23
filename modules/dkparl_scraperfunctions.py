@@ -18,8 +18,8 @@ SEARCH_URL_FORMAT = 'https://www.ft.dk/da/dokumenter/dokumentlister/referater?st
 PAGE_URL_FORMAT = '{}&pageNumber={}'
 
 
-## Function for getting resume links based on start and end date
-def get_resume_links(startdate, enddate, SEARCH_URL_FORMAT = SEARCH_URL_FORMAT, PAGE_URL_FORMAT = PAGE_URL_FORMAT):
+## Function for getting minutes links based on start and end date
+def get_minutes_links(startdate, enddate, SEARCH_URL_FORMAT = SEARCH_URL_FORMAT, PAGE_URL_FORMAT = PAGE_URL_FORMAT):
 
     ### Set search url
     search_url = SEARCH_URL_FORMAT.format(startdate, enddate)
@@ -50,10 +50,10 @@ def get_resume_links(startdate, enddate, SEARCH_URL_FORMAT = SEARCH_URL_FORMAT, 
         pagenumbers = list(range(2, no_pages+1)) # Excuding first page as it corresponds to search_url
 
 
-    ### Get resume links
-    resume_rows = soup.find('div', class_ = 'row search-result-container').find('table').find_all('tr')[1:]
-    resume_links = [col.find('td').find('a')['href'] for col in resume_rows if col.find('td').find('a') is not None]
-    #resume_links = [link.find('a')['href'] for link in soup.find_all('td', attrs = {'data-title': 'Mødedato, -tid og samling'})]
+    ### Get minutes links
+    minutes_rows = soup.find('div', class_ = 'row search-result-container').find('table').find_all('tr')[1:]
+    minutes_links = [col.find('td').find('a')['href'] for col in minutes_rows if col.find('td').find('a') is not None]
+    #minutes_links = [link.find('a')['href'] for link in soup.find_all('td', attrs = {'data-title': 'Mødedato, -tid og samling'})]
 
     
 
@@ -72,19 +72,19 @@ def get_resume_links(startdate, enddate, SEARCH_URL_FORMAT = SEARCH_URL_FORMAT, 
                 raise TypeError(f'Could not reach page {pagenumber}.')
             #page_links = [link.find('a')['href'] for link in soup.find_all('td', attrs = {'data-title': 'Mødedato, -tid og samling'})]
             
-            resume_links = resume_links + page_links
+            minutes_links = minutes_links + page_links
 
             time.sleep(random.uniform(0.5, 1.5))
             
-    resume_links = [urljoin(search_url, resume_link) for resume_link in resume_links]
+    minutes_links = [urljoin(search_url, minutes_link) for minutes_link in minutes_links]
 
 
     ### Return links
-    return(resume_links)
+    return(minutes_links)
 
 
-## Resume download
-def resume_download(url, data_path):
+## Minutes download
+def minutes_download(url, data_path):
 
     ### check for file in data path
     filename = re.search('(?s:.*)((?<=\/).*\.htm)', url).group(1)
@@ -116,8 +116,8 @@ def resume_download(url, data_path):
         f.write(content)
 
 
-## Resume scraper
-def resume_scraper(url):
+## Minutes scraper
+def minutes_scraper(url):
     
     ### regexes
     agendaregex = re.compile('Dagsorden.*')
@@ -145,13 +145,13 @@ def resume_scraper(url):
     except AttributeError:
         agenda = ''    
     
-    ### create dictionary for resume
-    resume_dict = {}
-    resume_dict['url'] = url
-    resume_dict['title'] = title
-    resume_dict['subtitle'] = subtitle
-    resume_dict['agenda'] = agenda
-    resume_dict['text'] = soup.get_text()
+    ### create dictionary for minutes
+    minutes_dict = {}
+    minutes_dict['url'] = url
+    minutes_dict['title'] = title
+    minutes_dict['subtitle'] = subtitle
+    minutes_dict['agenda'] = agenda
+    minutes_dict['text'] = soup.get_text()
     
     ### return dictionary
-    return(resume_dict)
+    return(minutes_dict)

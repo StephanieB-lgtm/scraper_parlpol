@@ -5,7 +5,7 @@ from os.path import join
 import sys
 
 sys.path.append(os.path.join('..', 'modules'))
-from dkparl_scraperfunctions import *
+from dkparl_scraperfunctions import get_minutes_links, minutes_download, minutes_scraper
 
 from bs4 import BeautifulSoup as bs
 import requests
@@ -25,26 +25,26 @@ log_p = join('..', 'log')
 
 
 ## Set dates
-startdate = "20050101" ## format YYYYMMDD
-enddate = "20071230" ## format YYYYMMDD
+startdate = "20070101" ## format YYYYMMDD
+enddate = "20221101" ## format YYYYMMDD
 
 
-## Get resume links
-resume_links = get_resume_links(startdate, enddate)
+## Get minutes links
+minutes_links = get_minutes_links(startdate, enddate)
 
 
-## Get resume
-#resume_scraper(resume_links[0])
+## Get minutes
+#minutes_scraper(minutes_links[0])
 
 
 ## Download files
-log_name = f'resume_dl_{str(datetime.now().date())}.txt'
+log_name = f'minutes_dl_{str(datetime.now().date())}.txt'
 
 failed = []
 
-for link in resume_links:
+for link in minutes_links:
     try:
-        resume_download(link, data_path = data_p)
+        minutes_download(link, data_path = data_p)
     except (ConnectionError, AttributeError):
         failed.append(link)
     

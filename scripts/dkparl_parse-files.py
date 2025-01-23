@@ -10,10 +10,10 @@ import re
 sys.path.append(join('/work', '214477', 'scraper_parlpol', 'modules'))
 
 from dkparl_parserfunctions import get_agendaitems
-from dkparl_parserfunctions import parse_parlresume
+from dkparl_parserfunctions import parse_parlminutes
 
 ## Paths
-data_p = join('/work', '214477', 'scraper_parlpol', 'data')
+data_p = join('..', 'data')
 data_raw_p = join(data_p, 'raw')
 data_out_p = join(data_p)
 
@@ -30,11 +30,11 @@ for c, file in enumerate(files, start=1):
     filepath = join(data_raw_p, file)
 
     with open(filepath, 'r', encoding='utf-8') as f:
-        parlresume = f.read()
+        parlminutes = f.read()
 
     try:
-        resume_parsed = parse_parlresume(parlresume, file)
-        parsed_files.append(resume_parsed)
+        minutes_parsed = parse_parlminutes(parlminutes, file)
+        parsed_files.append(minutes_parsed)
     except:
         failed.append(filepath)
     
@@ -42,7 +42,7 @@ for c, file in enumerate(files, start=1):
     print(progress, end = "\r")
 
 ## Store data as JSON - failed files as newline separated txt
-file_out = 'dkparl_parsed_20221216.json'
+file_out = 'dkparl_parsed_XXXX.json'
 failed_out = 'files_failed.txt'
 
 file_out_p = join(data_out_p, file_out)
