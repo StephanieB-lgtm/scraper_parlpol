@@ -25,7 +25,7 @@ def get_minutes_links(startdate, enddate, SEARCH_URL_FORMAT = SEARCH_URL_FORMAT,
     search_url = SEARCH_URL_FORMAT.format(startdate, enddate)
 
     ### Results
-    r = requests.get(search_url, verify = False) # disabling SSL check
+    r = requests.get(search_url) #do not disable SSL check. SSL check is important to verify that the website (actually the server hosting the site) is who they claim to be.
     soup = bs(r.text, 'html.parser')
 
     ### Number of pages
@@ -87,7 +87,7 @@ def get_minutes_links(startdate, enddate, SEARCH_URL_FORMAT = SEARCH_URL_FORMAT,
 def minutes_download(url, data_path):
 
     ### check for file in data path
-    filename = re.search('(?s:.*)((?<=\/).*\.htm)', url).group(1)
+    filename = re.search(r'(?s:.*)((?<=\/).*\.htm)', url).group(1)
 
     if filename in os.listdir(data_path):
         return
@@ -123,7 +123,7 @@ def minutes_scraper(url):
     agendaregex = re.compile('Dagsorden.*')
     
     ### send request and create soup object
-    r = requests.get(url, verify = False)
+    r = requests.get(url)
     r.encoding = r.apparent_encoding
     soup = bs(r.text, 'html.parser')
     
