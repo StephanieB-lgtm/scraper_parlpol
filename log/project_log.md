@@ -27,4 +27,10 @@
     - 7 failed
 
 
-####
+
+#### 2025-01-2024
+Changes made:
+
+-Updated the dkparl_scrape_files.py file with new entry dates 
+-Enabled SSL check in dkparl_scraperfunctions.py
+-Configured the file_out_p  var in dkparl_parse-files.py
