@@ -56,3 +56,5 @@ with open(file_out_p, 'w', encoding='utf-8') as f:
 with open(failed_out_p, 'w', encoding='utf-8') as f:
     for line in failed:
         f.write(line + '\n')
+        
+#VERIFICATION OF VERSION CONTROL
