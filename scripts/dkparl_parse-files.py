@@ -44,7 +44,7 @@ for c, file in enumerate(files, start=1):
     print(progress, end = "\r")
 
 ## Store data as JSON - failed files as newline separated txt
-file_out = 'dkparl_parsed_20221216.json'
+file_out = 'dkparl_parsed_20250124.json'
 failed_out = 'files_failed.txt'
 
 file_out_p = join(data_out_p, file_out)
