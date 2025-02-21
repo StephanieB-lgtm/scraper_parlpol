@@ -4,7 +4,10 @@ import os
 from os.path import join
 import sys
 
-sys.path.append(os.path.join('..', 'modules'))
+#sys.path.append(os.path.join('..', 'modules'))
+module_dir = join("/work/scraper_parlpol", "modules")
+sys.path.append(module_dir)
+
 from dkparl_scraperfunctions import get_minutes_links, minutes_download, minutes_scraper
 
 from bs4 import BeautifulSoup as bs
@@ -20,13 +23,13 @@ from datetime import datetime
 
 
 ## Set paths
-data_p = join('..', 'data', 'raw')
-log_p = join('..', 'log')
+data_p = join("/work/scraper_parlpol/data", "raw")
+log_p = join("/work/scraper_parlpol", "log")
 
 
 ## Set dates
-startdate = "20070101" ## format YYYYMMDD
-enddate = "20221101" ## format YYYYMMDD
+startdate = "20221101" ## format YYYYMMDD
+enddate = "20250124" ## format YYYYMMDD
 
 
 ## Get minutes links

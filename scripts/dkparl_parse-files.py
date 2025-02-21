@@ -7,13 +7,15 @@ from bs4 import BeautifulSoup as bs
 import json
 import re
 
-sys.path.append(join('/work', '214477', 'scraper_parlpol', 'modules'))
+module_dir = join("/work/scraper_parlpol", "modules")
+
+sys.path.append(module_dir)
 
 from dkparl_parserfunctions import get_agendaitems
 from dkparl_parserfunctions import parse_parlminutes
 
 ## Paths
-data_p = join('..', 'data')
+data_p = join("/work/scraper_parlpol", "data")
 data_raw_p = join(data_p, 'raw')
 data_out_p = join(data_p)
 
@@ -42,7 +44,7 @@ for c, file in enumerate(files, start=1):
     print(progress, end = "\r")
 
 ## Store data as JSON - failed files as newline separated txt
-file_out = 'dkparl_parsed_XXXX.json'
+file_out = 'dkparl_parsed_20221216.json'
 failed_out = 'files_failed.txt'
 
 file_out_p = join(data_out_p, file_out)
